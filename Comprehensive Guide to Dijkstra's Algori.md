@@ -196,8 +196,8 @@ sequenceDiagram
 ```
 
 ### Key Findings for Shortest Path (0 to 5)
-- Shortest path: 0 → 1 → 2 → 3 → 5
-- Total distance: 24 units
+- Shortest path: 0 → 2 → 5
+- Total distance: 11 units
 - Key decision points: 
   1. Initial route through node 1
   2. Navigating through intermediate nodes 2 and 3
