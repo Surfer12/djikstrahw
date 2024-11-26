@@ -585,10 +585,13 @@ This implementation of Dijkstra's Algorithm provides a flexible, generic approac
 
 ## Comprehensive Guide to Dijkstra's Algorithm with Case Study 
 
+![alt text](AD87C7B7-1406-4FA8-9702-19C32E6EA8E9.jpeg)
+
+
 ### 1. Practical Example
 Consider the following weighted graph:
 
-
+This represets the same graph as the one in the previous example, but with a different representation of the edges.
 
 ```mermaid
 graph TD
