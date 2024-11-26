@@ -69,10 +69,23 @@ graph TD
 
 Path visualization for 0 to 8 (highlighted in pink)
 
+## Key Findings of Shortest Path in given Graph
+Example 1 (0 to 5):
+- Shortest path: 0 → 1 → 2 → 3 → 5
+- Total distance: 24 units
+- Key decision point: Choosing path through node 1 instead of direct path (14)
+
+
+Example 2 (0 to 8):
+- Shortest path: 0 → 6 → 7 → 8
+- Total distance: 11 units
+- Key decision point: Using path through nodes 6 and 7 instead of longer alternatives
+
+
 
 ## Dijkstra's Algorithm: Comparative Analysis
 
-### Graph Structure Characteristics
+### Graph Representation Characteristics
 
 | Characteristic | Graph Details |
 |---------------|---------------|
@@ -81,7 +94,7 @@ Path visualization for 0 to 8 (highlighted in pink)
 | Longest Possible Path | 0 → 1 → 7 → 8 |
 | Maximum Edge Weight | 20 |
 
-1. Weighted Graph Representation
+1. Weighted Graph Representation as an Generoc Interface to Store Graph Structure in an Adjacency List Map
 ```java
 public class WeightedGraph<T> {
     // Adjacency list to store graph structure
@@ -106,7 +119,7 @@ public class WeightedGraph<T> {
 }
 ```
 
-2. Graph Visualization Representations
+### Graph Representation as an Interface
 
 
 #### Example Continued (Extended Graph) Nodes 0-8
@@ -131,7 +144,7 @@ graph TD
     style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-###  Graph Representation as an Interface
+###  Graph Representation as an Interface as an Implementation of Adjacency List HashMap
 
 ```java
 public interface GraphStructure<T> {
@@ -152,15 +165,39 @@ public class AdjacencyListGraph<T> implements GraphStructure<T> {
 }
 ```
 
+### Graph Representation as an Interface as an Implementation of Adjacency Matrix
+
+```java
+public class AdjacencyMatrixGraph<T> implements GraphStructure<T> {
+    private int[][] adjacencyMatrix;
+    
+    @Override
+    public void addEdge(T source, T destination, int weight) {
+        adjacencyMatrix[source][destination] = weight;
+    }
+    
+    @Override
+    public List<T> getNeighbors(T vertex) {
+        List<T> neighbors = new ArrayList<>();
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            if (adjacencyMatrix[i][vertex] != 0) {
+                neighbors.add(i);
+            }
+        }
+        return neighbors;
+    }
+}
+```
 ### Graph Traversal Considerations
 
-1. **Connectivity**: Ensure graph is connected
+1. **Connectivity**: Ensure graph is connected (no isolated vertices)
 2. **Weight Constraints**: 
    - Non-negative weights
    - Handle potential overflow
 3. **Performance Implications**:
    - Sparse graphs: Adjacency List
    - Dense graphs: Adjacency Matrix
+   - Weighted graphs: Weighted Graph
 ### Practical Recommendations
 
 - Use adjacency list for sparse graphs
@@ -319,23 +356,10 @@ Efficient space utilization is crucial for handling large graphs without excessi
 - Space complexity: O(V + E) with adjacency list
 
 
-## Comprehensive Guide to Dijkstra's Algorithm: Theory, Implementation, and Applications
+## Comprehensive Guide to Dijkstra's Algorithm: Theory, Implementation, and Applications of Priority Queues, Path Reconstruction, and Edge Relaxation
 The main idea behind Dijkstra's Algorithm is to efficiently find the shortest path between a starting node (source node) and every other node in a graph with non-negative edge weights.
 
-It achieves this by using a greedy approach:
-
-### Key Findings of Shortest Path in given Graph
-Example 1 (0 to 5):
-- Shortest path: 0 → 1 → 2 → 3 → 5
-- Total distance: 24 units
-- Key decision point: Choosing path through node 1 instead of direct path (14)
-
-
-Example 2 (0 to 8):
-- Shortest path: 0 → 6 → 7 → 8
-- Total distance: 11 units
-- Key decision point: Using path through nodes 6 and 7 instead of longer alternatives
-
+It achieves this by using a greedy approach that maintains a priority queue of nodes to visit, and a path reconstruction process to track the shortest path to each node
 
 # Comprehensive Guide to Dijkstra's Algorithm Implementation
 
