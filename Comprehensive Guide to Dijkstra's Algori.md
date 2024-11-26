@@ -27,28 +27,6 @@ graph TD
     style 0 fill:#f9f,stroke:#333,stroke-width:4px
     style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
 ```
-#### Priority Queue State Transitions
-```java
-// Example progression of priority queue states
-Step 1: [(0,0)]
-Step 2: [(1,4), (6,7)]
-Step 3: [(6,7), (2,13), (7,8)]
-Step 4: [(7,8), (2,13)]
-Step 5: [(8,11), (2,13)]
-```
-
-#### Path Tracking
-```java
-Map<Integer, Integer> previousNodes = new HashMap<>();
-// After algorithm completion:
-// 8 → 7 → 6 → 0
-```
-
-This practical example demonstrates how Dijkstra's algorithm:
-- Always selects the minimum current distance node
-- Updates distances through edge relaxation
-- Maintains an optimal substructure
-- Guarantees the shortest path upon completion
 
 ## Dijkstra's Algorithm: Comparative Analysis
 
@@ -135,37 +113,22 @@ sequenceDiagram
     Note over E: Distance[5] = 11
 
 ```
-
-### Detailed Analysis for Example 2 (0 to 8)
-```mermaid
-sequenceDiagram
-    participant S as Start_0
-    participant P as Process
-    participant E as End_8
-    
-    Note over S: Initial state
-    S->>P: Distance[0] = 0
-    Note over P: Visit node 0
-    P->>P: Update neighbors
-    Note right of P: 1: min(∞, 4) = 4
-    Note right of P: 6: min(∞, 7) = 7
-    
-    P->>P: Visit node 1
-    Note right of P: 2: min(∞, 4+9) = 13
-    Note right of P: 6: min(7, 4+11) = 7
-    Note right of P: 7: min(∞, 4+20) = 24
-    
-    P->>P: Visit node 6
-    Note right of P: 7: min(24, 7+1) = 8
-    
-    P->>P: Visit node 7
-    Note right of P: 8: min(∞, 8+3) = 11
-    
-    P->>E: Final shortest path
-    Note over E: Distance[8] = 11
+#### Priority Queue State Transitions
+```java
+// Example progression of priority queue states
+Step 1: [(0,0)]
+Step 2: [(1,4), (6,7)]
+Step 3: [(6,7), (2,13), (7,8)]
+Step 4: [(7,8), (2,13)]
+Step 5: [(8,11), (2,13)]
 ```
 
-
+#### Path Tracking
+```java
+Map<Integer, Integer> previousNodes = new HashMap<>();
+// After algorithm completion:
+// 8 → 7 → 6 → 0
+```
 
 ### Key Findings
 Example 1 (0 to 5):
@@ -178,7 +141,14 @@ Example 2 (0 to 8):
 - Total distance: 11 units
 - Key decision point: Using path through nodes 6 and 7 instead of longer alternatives
 
-### Sample Path Analysis: 0 to 8
+
+This practical example demonstrates how Dijkstra's algorithm:
+- Always selects the minimum current distance node
+- Updates distances through edge relaxation
+- Maintains an optimal substructure
+- Guarantees the shortest path upon completion
+
+### Sample Path Analysis: 0 to 8 using a sequence diagram to emulate the call stack frames using shapes. 
 Let's trace how Dijkstra's algorithm finds the shortest path from node 0 to node 8.
 
 ```mermaid
