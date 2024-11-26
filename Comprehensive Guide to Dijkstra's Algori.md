@@ -344,26 +344,24 @@ private void relaxEdge(Node current, Node neighbor, int weight) {
 }
 ```
 
-## Combined Process Example
-
 ```mermaid
 graph TD
-    subgraph Processing State
-        PQ[Priority Queue<br/>Current: (2,9)]
-        DM[Distance Map<br/>0:0, 1:7, 2:9, 3:∞, 4:∞, 5:14]
-        PM[Previous Map<br/>1←0, 2←0, 5←0]
+    subgraph "Processing State"
+        PQ["Priority Queue\nCurrent: (2,9)"]
+        DM["Distance Map\n0:0, 1:7, 2:9, 3:∞, 4:∞, 5:14"]
+        PM["Previous Map\n1←0, 2←0, 5←0"]
     end
-    
-    subgraph Edge Relaxation
+
+    subgraph "Edge Relaxation"
         direction LR
-        C((Current: 2)) -->|"weight=2"| N((Neighbor: 5))
-        Note["Old distance to 5: 14<br/>New possible distance: 11<br/>11 < 14, so update"]
+        C((2)) -->|"weight=2"| N((5))
+        Note["Old distance to 5: 14\nNew possible distance: 11\n11 < 14, so update"]
     end
     
-    subgraph Updated State
-        PQ2[Priority Queue<br/>Next: (5,11)]
-        DM2[Distance Map<br/>0:0, 1:7, 2:9, 3:∞, 4:∞, 5:11]
-        PM2[Previous Map<br/>1←0, 2←0, 5←2]
+    subgraph "Updated State"
+        PQ2["Priority Queue\nNext: (5,11)"]
+        DM2["Distance Map\n0:0, 1:7, 2:9, 3:∞, 4:∞, 5:11"]
+        PM2["Previous Map\n1←0, 2←0, 5←2"]
     end
 ```
 
@@ -583,12 +581,12 @@ public void testShortestPath() {
 ### Conclusion
 This implementation of Dijkstra's Algorithm provides a flexible, generic approach that can be adapted to various use cases while maintaining performance and reliability. The use of generics allows for versatile application across different data types, while the interface-based design ensures extensibility and maintainability.
 
-## Comprehensive Guide to Dijkstra's Algorithm with Case Study 
+## Comprehensive Guide to Dijkstra's Algorithm with Presentation Example 
 
 ![alt text](AD87C7B7-1406-4FA8-9702-19C32E6EA8E9.jpeg)
 
 
-### 1. Practical Example
+### 1. Presentation Example
 Consider the following weighted graph:
 
 This represets the same graph as the one in the previous example, but with a different representation of the edges.
