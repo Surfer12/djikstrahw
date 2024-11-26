@@ -389,26 +389,6 @@ code {
     style 0 fill:#f9f,stroke:#333,stroke-width:4px
     style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
 </div></code></pre>
-<h4 id="priority-queue-state-transitions">Priority Queue State Transitions</h4>
-<pre class="hljs"><code><div><span class="hljs-comment">// Example progression of priority queue states</span>
-Step <span class="hljs-number">1</span>: [(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)]
-Step <span class="hljs-number">2</span>: [(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>), (<span class="hljs-number">6</span>,<span class="hljs-number">7</span>)]
-Step <span class="hljs-number">3</span>: [(<span class="hljs-number">6</span>,<span class="hljs-number">7</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>), (<span class="hljs-number">7</span>,<span class="hljs-number">8</span>)]
-Step <span class="hljs-number">4</span>: [(<span class="hljs-number">7</span>,<span class="hljs-number">8</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
-Step <span class="hljs-number">5</span>: [(<span class="hljs-number">8</span>,<span class="hljs-number">11</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
-</div></code></pre>
-<h4 id="path-tracking">Path Tracking</h4>
-<pre class="hljs"><code><div>Map&lt;Integer, Integer&gt; previousNodes = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
-<span class="hljs-comment">// After algorithm completion:</span>
-<span class="hljs-comment">// 8 → 7 → 6 → 0</span>
-</div></code></pre>
-<p>This practical example demonstrates how Dijkstra's algorithm:</p>
-<ul>
-<li>Always selects the minimum current distance node</li>
-<li>Updates distances through edge relaxation</li>
-<li>Maintains an optimal substructure</li>
-<li>Guarantees the shortest path upon completion</li>
-</ul>
 <h2 id="dijkstras-algorithm-comparative-analysis">Dijkstra's Algorithm: Comparative Analysis</h2>
 <h3 id="graph-structures">Graph Structures</h3>
 <h4 id="example-1-original-graph-nodes-0-5">Example 1 (Original Graph) Nodes 0-5</h4>
@@ -486,32 +466,18 @@ Step <span class="hljs-number">5</span>: [(<span class="hljs-number">8</span>,<s
     Note over E: Distance[5] = 11
 
 </div></code></pre>
-<h3 id="detailed-analysis-for-example-2-0-to-8">Detailed Analysis for Example 2 (0 to 8)</h3>
-<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
-    participant S as Start_0
-    participant P as Process
-    participant E as End_8
-    
-    Note over S: Initial state
-    S->>P: Distance[0] = 0
-    Note over P: Visit node 0
-    P->>P: Update neighbors
-    Note right of P: 1: min(∞, 4) = 4
-    Note right of P: 6: min(∞, 7) = 7
-    
-    P->>P: Visit node 1
-    Note right of P: 2: min(∞, 4+9) = 13
-    Note right of P: 6: min(7, 4+11) = 7
-    Note right of P: 7: min(∞, 4+20) = 24
-    
-    P->>P: Visit node 6
-    Note right of P: 7: min(24, 7+1) = 8
-    
-    P->>P: Visit node 7
-    Note right of P: 8: min(∞, 8+3) = 11
-    
-    P->>E: Final shortest path
-    Note over E: Distance[8] = 11
+<h4 id="priority-queue-state-transitions">Priority Queue State Transitions</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// Example progression of priority queue states</span>
+Step <span class="hljs-number">1</span>: [(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)]
+Step <span class="hljs-number">2</span>: [(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>), (<span class="hljs-number">6</span>,<span class="hljs-number">7</span>)]
+Step <span class="hljs-number">3</span>: [(<span class="hljs-number">6</span>,<span class="hljs-number">7</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>), (<span class="hljs-number">7</span>,<span class="hljs-number">8</span>)]
+Step <span class="hljs-number">4</span>: [(<span class="hljs-number">7</span>,<span class="hljs-number">8</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
+Step <span class="hljs-number">5</span>: [(<span class="hljs-number">8</span>,<span class="hljs-number">11</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
+</div></code></pre>
+<h4 id="path-tracking">Path Tracking</h4>
+<pre class="hljs"><code><div>Map&lt;Integer, Integer&gt; previousNodes = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+<span class="hljs-comment">// After algorithm completion:</span>
+<span class="hljs-comment">// 8 → 7 → 6 → 0</span>
 </div></code></pre>
 <h3 id="key-findings">Key Findings</h3>
 <p>Example 1 (0 to 5):</p>
@@ -526,7 +492,14 @@ Step <span class="hljs-number">5</span>: [(<span class="hljs-number">8</span>,<s
 <li>Total distance: 11 units</li>
 <li>Key decision point: Using path through nodes 6 and 7 instead of longer alternatives</li>
 </ul>
-<h3 id="sample-path-analysis-0-to-8">Sample Path Analysis: 0 to 8</h3>
+<p>This practical example demonstrates how Dijkstra's algorithm:</p>
+<ul>
+<li>Always selects the minimum current distance node</li>
+<li>Updates distances through edge relaxation</li>
+<li>Maintains an optimal substructure</li>
+<li>Guarantees the shortest path upon completion</li>
+</ul>
+<h3 id="sample-path-analysis-0-to-8-using-a-sequence-diagram-to-emulate-the-call-stack-frames-using-shapes">Sample Path Analysis: 0 to 8 using a sequence diagram to emulate the call stack frames using shapes.</h3>
 <p>Let's trace how Dijkstra's algorithm finds the shortest path from node 0 to node 8.</p>
 <pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
     participant PQ as Priority Queue
