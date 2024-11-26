@@ -661,7 +661,7 @@ graph TD
     end
 ```
 
-### 2. Algorithm Implementation for Example
+### 2. Algorithm Implementation
 ```java
 public class DijkstraExample {
     public static Map<Integer, Integer> findShortestPath(WeightedGraph graph, int start) {
@@ -746,7 +746,7 @@ This practical example demonstrates how Dijkstra's algorithm:
 
 ### Graph Structures
 
-#### Example 1 (Original Graph)
+#### Example 1 (Original Graph) Nodes 0-5 
 ```mermaid
 graph TD
     0((0)) -->|7| 1((1))
@@ -762,7 +762,7 @@ graph TD
     style 1,2,3,4,5 fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-#### Example 2 (Extended Graph)
+#### Example 2 (Extended Graph) Nodes 0-8
 ```mermaid
 graph TD
     0((0)) -->|4| 1((1))
@@ -801,61 +801,63 @@ sequenceDiagram
         P->>PQ: Add unvisited neighbors
     end
 ```
-
 ### Detailed Analysis for Example 1 (0 to 5)
 ```mermaid
 sequenceDiagram
-    participant Start as Start(0)
-    participant Process as Processing
-    participant End as End(5)
+    participant S as Start_0
+    participant P as Process
+    participant E as End_5
     
-    Note over Start: Initial state
-    Start->>Process: Distance[0] = 0
-    Note over Process: Visit node 0
-    Process->>Process: Update neighbors
-    Note right of Process: 1: min(∞, 7) = 7
-    Note right of Process: 2: min(∞, 9) = 9
-    Note right of Process: 5: min(∞, 14) = 14
+    Note over S: Initial state
+    S->>P: Distance[0] = 0
+    Note over P: Visit node 0
+    P->>P: Update neighbors
+    Note right of P: 1: min(∞, 7) = 7
+    Note right of P: 2: min(∞, 9) = 9
+    Note right of P: 5: min(∞, 14) = 14
     
-    Process->>Process: Visit node 1
-    Note right of Process: 2: min(9, 7+10) = 9
-    Note right of Process: 3: min(∞, 7+15) = 22
+    P->>P: Visit node 1
+    Note right of P: 2: min(9, 7+10) = 9
+    Note right of P: 3: min(∞, 7+15) = 22
     
-    Process->>Process: Visit node 2
-    Note right of Process: 5: min(14, 9+2) = 11
+    P->>P: Visit node 2
+    Note right of P: 5: min(14, 9+2) = 11
     
-    Process->>End: Final shortest path
-    Note over End: Distance[5] = 11
+    P->>E: Final shortest path
+    Note over E: Distance[5] = 11
+
 ```
 
 ### Detailed Analysis for Example 2 (0 to 8)
 ```mermaid
 sequenceDiagram
-    participant Start as Start(0)
-    participant Process as Processing
-    participant End as End(8)
+    participant S as Start_0
+    participant P as Process
+    participant E as End_8
     
-    Note over Start: Initial state
-    Start->>Process: Distance[0] = 0
-    Note over Process: Visit node 0
-    Process->>Process: Update neighbors
-    Note right of Process: 1: min(∞, 4) = 4
-    Note right of Process: 6: min(∞, 7) = 7
+    Note over S: Initial state
+    S->>P: Distance[0] = 0
+    Note over P: Visit node 0
+    P->>P: Update neighbors
+    Note right of P: 1: min(∞, 4) = 4
+    Note right of P: 6: min(∞, 7) = 7
     
-    Process->>Process: Visit node 1
-    Note right of Process: 2: min(∞, 4+9) = 13
-    Note right of Process: 6: min(7, 4+11) = 7
-    Note right of Process: 7: min(∞, 4+20) = 24
+    P->>P: Visit node 1
+    Note right of P: 2: min(∞, 4+9) = 13
+    Note right of P: 6: min(7, 4+11) = 7
+    Note right of P: 7: min(∞, 4+20) = 24
     
-    Process->>Process: Visit node 6
-    Note right of Process: 7: min(24, 7+1) = 8
+    P->>P: Visit node 6
+    Note right of P: 7: min(24, 7+1) = 8
     
-    Process->>Process: Visit node 7
-    Note right of Process: 8: min(∞, 8+3) = 11
+    P->>P: Visit node 7
+    Note right of P: 8: min(∞, 8+3) = 11
     
-    Process->>End: Final shortest path
-    Note over End: Distance[8] = 11
+    P->>E: Final shortest path
+    Note over E: Distance[8] = 11
 ```
+
+
 
 ### Key Findings
 Example 1 (0 to 5):
