@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Comprehensive Guide to Dijkstra's Algori.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="comprehensive-guide-to-dijkstras-algorithm-implementation">Comprehensive Guide to Dijkstra's Algorithm Implementation</h1>
+<h2 id="1-algorithm-overview">1. Algorithm Overview</h2>
+<p>Dijkstra's algorithm finds the shortest paths between nodes in a weighted graph, which may represent networks, roads, or any weighted relationships.</p>
+<h3 id="core-components">Core Components</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Components
+        PQ[Priority Queue] --> |Maintains Order| NP[Node Processing]
+        NP --> |Updates| DT[Distance Tracking]
+        DT --> |Records| PT[Path Tracking]
+        PT --> |Enables| PR[Path Reconstruction]
+    end
+</div></code></pre>
+<h2 id="2-implementation-structure">2. Implementation Structure</h2>
+<h3 id="base-graph-structure">Base Graph Structure</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WeightedGraph</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-keyword">private</span> Map&lt;T, Map&lt;T, Integer&gt;&gt; adjacencyList;
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addEdge</span><span class="hljs-params">(T source, T destination, <span class="hljs-keyword">int</span> weight)</span> </span>{
+        adjacencyList.computeIfAbsent(source, k -&gt; <span class="hljs-keyword">new</span> HashMap&lt;&gt;())
+                    .put(destination, weight);
+    }
+}
+</div></code></pre>
+<h3 id="priority-queue-management">Priority Queue Management</h3>
+<pre class="hljs"><code><div>PriorityQueue&lt;Node&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; 
+    distances.get(a) - distances.get(b));
+</div></code></pre>
+<h2 id="3-algorithm-execution-process">3. Algorithm Execution Process</h2>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant Init as Initialization
+    participant PQ as Priority Queue
+    participant Process as Processing
+    participant Path as Path Tracking
+    
+    Init->>PQ: Set source distance to 0
+    Init->>PQ: Set all other distances to ∞
+    
+    loop While PQ not empty
+        PQ->>Process: Get minimum distance node
+        Process->>Process: Process all neighbors
+        Process->>Path: Update distances and paths
+        Process->>PQ: Add updated nodes
+    end
+    Path->>Path: Reconstruct shortest path
+</div></code></pre>
+<h2 id="4-example-walkthrough">4. Example Walkthrough</h2>
+<h3 id="sample-graph">Sample Graph</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    0((0)) -->|7| 1((1))
+    0 -->|9| 2((2))
+    0 -->|14| 5((5))
+    1 -->|10| 2((2))
+    1 -->|15| 3((3))
+    2 -->|11| 3((3))
+    2 -->|2| 5((5))
+    3 -->|6| 4((4))
+    4 -->|9| 5((5))
+    style 0 fill:#f9f,stroke:#333,stroke-width:4px
+    style 1,2,3,4,5 fill:#bbf,stroke:#333,stroke-width:2px
+</div></code></pre>
+<h3 id="processing-steps">Processing Steps</h3>
+<p>Initialize distances:</p>
+<p>Node 0: 0</p>
+<p>All other nodes: ∞</p>
+<p>Priority Queue States:</p>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant PQ as Priority Queue
+    participant D as Distances
+    
+    Note over PQ: Initial: [(0,0)]
+    PQ->>D: Process 0
+    Note over D: Update neighbors
+    Note over PQ: Next: [(1,7),(2,9),(5,14)]
+    PQ->>D: Process 1
+    Note over PQ: Next: [(2,9),(5,11),(3,22)]
+</div></code></pre>
+<h2 id="5-path-reconstruction">5. Path Reconstruction</h2>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Path Tracking Structure
+        direction LR
+        N0[Node 0] -->|"prev[1]=0"| N1[Node 1]
+        N1 -->|"prev[2]=1"| N2[Node 2]
+        N2 -->|"prev[5]=2"| N5[Node 5]
+    end
+</div></code></pre>
+<h3 id="implementation">Implementation:</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Node&gt; <span class="hljs-title">reconstructPath</span><span class="hljs-params">(Node destination)</span> </span>{
+    List&lt;Node&gt; path = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    Node current = destination;
+    
+    <span class="hljs-keyword">while</span> (current != <span class="hljs-keyword">null</span>) {
+        path.add(<span class="hljs-number">0</span>, current);
+        current = previousNodes.get(current);
+    }
+    <span class="hljs-keyword">return</span> path;
+}
+</div></code></pre>
+<h2 id="6-edge-relaxation-process">6. Edge Relaxation Process</h2>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    subgraph Edge Relaxation
+        C((Current)) -->|"weight w"| N((Neighbor))
+        style C fill:#f9f
+        style N fill:#bbf
+    end
+    
+    subgraph Decision
+        direction TB
+        D{{"If current.distance + w < neighbor.distance"}}
+        U[Update neighbor distance]
+        P[Update previous node]
+    end
+</div></code></pre>
+<h2 id="7-performance-characteristics">7. Performance Characteristics</h2>
+<h3 id="time-complexity">Time Complexity</h3>
+<p>With Binary Heap: O((V + E) log V)
+With Fibonacci Heap: O(E + V log V)</p>
+<h3 id="space-complexity">Space Complexity</h3>
+<p>Adjacency List: O(V + E)
+Priority Queue: O(V)
+Distance/Previous Arrays: O(V)</p>
+<h2 id="8-optimization-techniques">8. Optimization Techniques</h2>
+<h3 id="priority-queue-optimization">Priority Queue Optimization</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Use offers instead of updates</span>
+<span class="hljs-keyword">if</span> (newDistance &lt; distances.get(neighbor)) {
+    pq.offer(<span class="hljs-keyword">new</span> Node(neighbor, newDistance));
+    distances.put(neighbor, newDistance);
+}
+</div></code></pre>
+<h3 id="memory-management">Memory Management</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Use primitive arrays for small graphs</span>
+<span class="hljs-keyword">int</span>[] distances = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[vertices];
+<span class="hljs-keyword">int</span>[] previous = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[vertices];
+</div></code></pre>
+<h3 id="early-termination">Early Termination</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> (current.equals(destination)) {
+    <span class="hljs-keyword">break</span>; <span class="hljs-comment">// Found shortest path to destination</span>
+}
+</div></code></pre>
+<h2 id="9-best-practices">9. Best Practices</h2>
+<h3 id="input-validation">Input Validation</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">validateInput</span><span class="hljs-params">(Graph graph)</span> </span>{
+    <span class="hljs-keyword">if</span> (graph == <span class="hljs-keyword">null</span> || graph.isEmpty()) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"Invalid graph"</span>);
+    }
+}
+</div></code></pre>
+<h3 id="edge-case-handling">Edge Case Handling</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> (source.equals(destination)) {
+    <span class="hljs-keyword">return</span> Collections.singletonList(source);
+}
+</div></code></pre>
+<h3 id="negative-weight-detection">Negative Weight Detection</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> (Edge edge : graph.getEdges()) {
+    <span class="hljs-keyword">if</span> (edge.weight &lt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"Negative weights not supported"</span>);
+    }
+}
+</div></code></pre>
+<h2 id="10-common-applications">10. Common Applications</h2>
+<ul>
+<li>Network Routing</li>
+<li>Social Networks</li>
+<li>Geographic Maps</li>
+<li>Game AI Pathfinding</li>
+<li>Resource Distribution</li>
+</ul>
+<h2 id="11-testing-strategies">11. Testing Strategies</h2>
+<pre class="hljs"><code><div><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testShortestPath</span><span class="hljs-params">()</span> </span>{
+    WeightedGraph graph = <span class="hljs-keyword">new</span> WeightedGraph();
+    <span class="hljs-comment">// Add test edges</span>
+    List&lt;Node&gt; path = dijkstra(graph, source, destination);
+    assertNotNull(path);
+    assertEquals(expectedDistance, getPathDistance(path));
+}
+</div></code></pre>
+<p>Would you like me to expand on any particular section or add more specific implementation details?</p>
+<h2 id="1-priority-queue-maintenance">1. Priority Queue Maintenance</h2>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant PQ as Priority Queue
+    participant VN as Visited Nodes
+    participant DS as Distance State
+    Note over PQ: Initial Queue State<br/>[(0,0)]
+    
+    PQ->>DS: Poll Node 0
+    Note over DS: Process neighbors of 0<br/>Update distances
+    DS->>PQ: Add neighbors with priorities:<br/>(1,7), (2,9), (5,14)
+    
+    Note over PQ: Queue State<br/>[(1,7), (2,9), (5,14)]
+    
+    PQ->>DS: Poll Node 1 (lowest distance)
+    Note over DS: Process neighbors of 1<br/>Update distances
+    DS->>PQ: Add/Update neighbors:<br/>(2,17), (3,22)
+    
+    Note over PQ: Queue State<br/>[(2,9), (5,14), (3,22)]
+</div></code></pre>
+<h3 id="priority-queue-efficiency">Priority Queue Efficiency:</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Binary Heap Implementation</span>
+PriorityQueue&lt;Node&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; 
+    distances.get(a) - distances.get(b));
+
+<span class="hljs-comment">// Key Operations:</span>
+<span class="hljs-comment">// O(log n) insertion</span>
+pq.offer(<span class="hljs-keyword">new</span> Node(vertex, distance));
+
+<span class="hljs-comment">// O(log n) removal of minimum element</span>
+Node current = pq.poll();
+
+<span class="hljs-comment">// O(1) peek at minimum element</span>
+Node next = pq.peek();
+</div></code></pre>
+<h2 id="2-path-reconstruction">2. Path Reconstruction</h2>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Path Tracking
+        0((0)) -->|"prev[1]=0"| 1((1))
+        1 -->|"prev[2]=1"| 2((2))
+        2 -->|"prev[5]=2"| 5((5))
+        
+        style 0 fill:#f9f,stroke:#333
+        style 1,2,5 fill:#bbf,stroke:#333
+    end
+
+    subgraph Previous Nodes Map
+        PM[Previous Nodes HashMap:<br/>5 → 2<br/>2 → 1<br/>1 → 0]
+    end
+</div></code></pre>
+<h3 id="path-tracking-implementation">Path Tracking Implementation:</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">private</span> Map&lt;Node, Node&gt; previousNodes = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">trackPath</span><span class="hljs-params">(Node current, Node neighbor, <span class="hljs-keyword">int</span> newDistance)</span> </span>{
+    <span class="hljs-keyword">if</span> (newDistance &lt; distances.get(neighbor)) {
+        distances.put(neighbor, newDistance);
+        previousNodes.put(neighbor, current);  <span class="hljs-comment">// Track the path</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Node&gt; <span class="hljs-title">reconstructPath</span><span class="hljs-params">(Node destination)</span> </span>{
+    List&lt;Node&gt; path = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    Node current = destination;
+    
+    <span class="hljs-keyword">while</span> (current != <span class="hljs-keyword">null</span>) {
+        path.add(<span class="hljs-number">0</span>, current);  <span class="hljs-comment">// Add to front of list</span>
+        current = previousNodes.get(current);  <span class="hljs-comment">// Move to previous node</span>
+    }
+    <span class="hljs-keyword">return</span> path;
+}
+</div></code></pre>
+<h2 id="3-edge-relaxation">3. Edge Relaxation</h2>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant C as Current Node
+    participant N as Neighbor Node
+    participant D as Distance Array
+    
+    Note over C,N: Edge Relaxation Process
+    C->>N: Check edge weight (w)
+    Note over C,D: Current distance = d
+    Note over N,D: Neighbor distance = n
+    
+    alt d + w < n
+        N->>D: Update distance
+        Note over D: New distance = d + w
+        N->>D: Update previous node
+    else d + w >= n
+        Note over D: Keep current distance
+    end
+</div></code></pre>
+<h3 id="edge-relaxation-implementation">Edge Relaxation Implementation:</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">relaxEdge</span><span class="hljs-params">(Node current, Node neighbor, <span class="hljs-keyword">int</span> weight)</span> </span>{
+    <span class="hljs-keyword">int</span> currentDistance = distances.get(current);
+    <span class="hljs-keyword">int</span> neighborDistance = distances.get(neighbor);
+    <span class="hljs-keyword">int</span> newDistance = currentDistance + weight;
+    
+    <span class="hljs-keyword">if</span> (newDistance &lt; neighborDistance) {
+        <span class="hljs-comment">// Update distance</span>
+        distances.put(neighbor, newDistance);
+        <span class="hljs-comment">// Update previous node</span>
+        previousNodes.put(neighbor, current);
+        <span class="hljs-comment">// Add to priority queue with new priority</span>
+        pq.offer(neighbor);
+    }
+}
+</div></code></pre>
+<h2 id="combined-process-example">Combined Process Example</h2>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Processing State
+        PQ[Priority Queue<br/>Current: (2,9)]
+        DM[Distance Map<br/>0:0, 1:7, 2:9, 3:∞, 4:∞, 5:14]
+        PM[Previous Map<br/>1←0, 2←0, 5←0]
+    end
+    
+    subgraph Edge Relaxation
+        direction LR
+        C((Current: 2)) -->|"weight=2"| N((Neighbor: 5))
+        Note["Old distance to 5: 14<br/>New possible distance: 11<br/>11 < 14, so update"]
+    end
+    
+    subgraph Updated State
+        PQ2[Priority Queue<br/>Next: (5,11)]
+        DM2[Distance Map<br/>0:0, 1:7, 2:9, 3:∞, 4:∞, 5:11]
+        PM2[Previous Map<br/>1←0, 2←0, 5←2]
+    end
+</div></code></pre>
+<h3 id="key-optimizations">Key Optimizations:</h3>
+<ul>
+<li>
+<p>Priority Queue Management</p>
+<ul>
+<li>Maintain heap property after every update</li>
+<li>Only add nodes when their distance improves</li>
+<li>Use decrease-key operation when available</li>
+</ul>
+</li>
+<li>
+<p>Path Tracking</p>
+<ul>
+<li>Only update previous node when finding shorter path</li>
+<li>Store only essential path information</li>
+<li>Reconstruct path only when needed</li>
+</ul>
+</li>
+<li>
+<p>Edge Relaxation</p>
+<ul>
+<li>Process each edge at most once</li>
+<li>Early termination when possible</li>
+<li>Skip relaxation if current node's distance is infinity</li>
+</ul>
+</li>
+</ul>
+<h2 id="comprehensive-guide-to-dijkstras-algorithm-implementation">Comprehensive Guide to Dijkstra's Algorithm Implementation</h2>
+<h3 id="overview">Overview</h3>
+<p>Dijkstra's Algorithm is a fundamental graph algorithm used to find the shortest paths between nodes in a weighted graph. This document provides a detailed exploration of its implementation, with a focus on a generic Java-based approach that supports multiple data types.</p>
+<h3 id="core-components">Core Components</h3>
+<h4 id="graph-representation">Graph Representation</h4>
+<ol>
+<li>Interface-based Design
+The implementation uses a flexible interface-based approach:</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Graph</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addVertex</span><span class="hljs-params">(T vertex)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addEdge</span><span class="hljs-params">(T source, T destination, <span class="hljs-keyword">int</span> weight)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addEdge</span><span class="hljs-params">(T source, T destination)</span></span>;
+    <span class="hljs-function">Set&lt;T&gt; <span class="hljs-title">getNeighbors</span><span class="hljs-params">(T vertex)</span></span>;
+    <span class="hljs-comment">// ... other methods</span>
+}
+</div></code></pre>
+<ol start="2">
+<li>Implementation Options</li>
+</ol>
+<h4 id="adjacency-list-implementation">Adjacency List Implementation</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GraphList</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">Graph</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;T, Set&lt;T&gt;&gt; adjacencyList;
+    <span class="hljs-comment">// Provides O(|V| + |E|) space complexity</span>
+    <span class="hljs-comment">// Efficient for sparse graphs</span>
+}
+</div></code></pre>
+<h4 id="adjacency-matrix-implementation">Adjacency Matrix Implementation</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GraphMatrix</span>&lt;<span class="hljs-title">T</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Integer</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">Graph</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] adjacencyMatrix;
+    <span class="hljs-comment">// Provides O(|V|²) space complexity</span>
+    <span class="hljs-comment">// Efficient for dense graphs</span>
+}
+</div></code></pre>
+<h4 id="generic-node-structure">Generic Node Structure</h4>
+<p>The implementation uses a generic node class to support various data types:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GenericNode</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-keyword">private</span> T data;
+    <span class="hljs-keyword">private</span> List&lt;GenericNode&lt;T&gt;&gt; neighbors;
+    <span class="hljs-keyword">private</span> GenericNode&lt;T&gt; left;
+    <span class="hljs-keyword">private</span> GenericNode&lt;T&gt; right;
+    
+    <span class="hljs-comment">// Constructor and methods</span>
+}
+</div></code></pre>
+<h3 id="algorithm-implementation">Algorithm Implementation</h3>
+<h4 id="core-algorithm-structure">Core Algorithm Structure</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DijkstraGeneric</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+    <span class="hljs-keyword">public</span> Map&lt;GenericNode&lt;T&gt;, Integer&gt; findShortestPath(
+            Map&lt;GenericNode&lt;T&gt;, Map&lt;GenericNode&lt;T&gt;, Integer&gt;&gt; graph,
+            GenericNode&lt;T&gt; source,
+            GenericNode&lt;T&gt; destination) {
+        
+        Map&lt;GenericNode&lt;T&gt;, Integer&gt; distances = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        Map&lt;GenericNode&lt;T&gt;, GenericNode&lt;T&gt;&gt; previousNodes = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        PriorityQueue&lt;GenericNode&lt;T&gt;&gt; queue = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(
+            (a, b) -&gt; distances.getOrDefault(a, Integer.MAX_VALUE)
+                    - distances.getOrDefault(b, Integer.MAX_VALUE)
+        );
+        
+        <span class="hljs-comment">// Initialize distances</span>
+        initializeDistances(graph, source, distances);
+        
+        <span class="hljs-comment">// Process nodes</span>
+        processNodes(graph, distances, previousNodes, queue, destination);
+        
+        <span class="hljs-comment">// Reconstruct path</span>
+        reconstructPath(previousNodes, destination);
+        
+        <span class="hljs-keyword">return</span> distances;
+    }
+}
+</div></code></pre>
+<h4 id="key-components-breakdown">Key Components Breakdown</h4>
+<h5 id="initialization-phase">Initialization Phase</h5>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initializeDistances</span><span class="hljs-params">(
+        Map&lt;GenericNode&lt;T&gt;, Map&lt;GenericNode&lt;T&gt;, Integer&gt;&gt; graph,
+        GenericNode&lt;T&gt; source,
+        Map&lt;GenericNode&lt;T&gt;, Integer&gt; distances)</span> </span>{
+    
+    <span class="hljs-keyword">for</span> (GenericNode&lt;T&gt; node : graph.keySet()) {
+        distances.put(node, Integer.MAX_VALUE);
+    }
+    distances.put(source, <span class="hljs-number">0</span>);
+}
+</div></code></pre>
+<h5 id="node-processing">Node Processing</h5>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">processNodes</span><span class="hljs-params">(
+        Map&lt;GenericNode&lt;T&gt;, Map&lt;GenericNode&lt;T&gt;, Integer&gt;&gt; graph,
+        Map&lt;GenericNode&lt;T&gt;, Integer&gt; distances,
+        Map&lt;GenericNode&lt;T&gt;, GenericNode&lt;T&gt;&gt; previousNodes,
+        PriorityQueue&lt;GenericNode&lt;T&gt;&gt; queue,
+        GenericNode&lt;T&gt; destination)</span> </span>{
+    
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        GenericNode&lt;T&gt; current = queue.poll();
+        <span class="hljs-keyword">if</span> (current.equals(destination)) <span class="hljs-keyword">break</span>;
+        
+        processNeighbors(current, graph, distances, previousNodes, queue);
+    }
+}
+</div></code></pre>
+<h5 id="path-reconstruction">Path Reconstruction</h5>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">reconstructPath</span><span class="hljs-params">(
+        Map&lt;GenericNode&lt;T&gt;, GenericNode&lt;T&gt;&gt; previousNodes,
+        GenericNode&lt;T&gt; destination)</span> </span>{
+    
+    List&lt;GenericNode&lt;T&gt;&gt; path = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    GenericNode&lt;T&gt; current = destination;
+    
+    <span class="hljs-keyword">while</span> (current != <span class="hljs-keyword">null</span>) {
+        path.add(<span class="hljs-number">0</span>, current);
+        current = previousNodes.get(current);
+    }
+    
+    printPath(path);
+}
+</div></code></pre>
+<h3 id="performance-characteristics">Performance Characteristics</h3>
+<h4 id="time-complexity">Time Complexity</h4>
+<p>With Binary Heap: O((|V| + |E|) log |V|)
+With Fibonacci Heap: O(|E| + |V| log |V|)</p>
+<h4 id="space-complexity">Space Complexity</h4>
+<p>Adjacency List: O(|V| + |E|)
+Adjacency Matrix: O(|V|²)</p>
+<h3 id="best-practices-and-optimization-techniques">Best Practices and Optimization Techniques</h3>
+<h4 id="priority-queue-optimization">Priority Queue Optimization</h4>
+<ul>
+<li>Use a binary heap for most cases</li>
+<li>Consider Fibonacci heap for very large graphs</li>
+</ul>
+<h4 id="memory-management">Memory Management</h4>
+<ul>
+<li>Use adjacency list for sparse graphs</li>
+<li>Use adjacency matrix for dense graphs</li>
+</ul>
+<h4 id="edge-case-handling">Edge Case Handling</h4>
+<ul>
+<li>Validate input parameters</li>
+<li>Handle disconnected graphs</li>
+<li>Check for negative weights</li>
+</ul>
+<h3 id="common-pitfalls-and-solutions">Common Pitfalls and Solutions</h3>
+<h4 id="negative-edge-weights">Negative Edge Weights</h4>
+<ul>
+<li>Solution: Validate weights during edge addition</li>
+<li>Alternative: Use Bellman-Ford algorithm</li>
+</ul>
+<h4 id="infinite-loops">Infinite Loops</h4>
+<ul>
+<li>Solution: Track visited nodes</li>
+<li>Implement cycle detection</li>
+</ul>
+<h4 id="memory-overflow">Memory Overflow</h4>
+<ul>
+<li>Solution: Implement iterative deepening</li>
+<li>Use memory-efficient data structures</li>
+</ul>
+<h3 id="testing-strategies">Testing Strategies</h3>
+<h4 id="unit-tests">Unit Tests</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testShortestPath</span><span class="hljs-params">()</span> </span>{
+    GraphList&lt;Integer&gt; graph = <span class="hljs-keyword">new</span> GraphList&lt;&gt;();
+    <span class="hljs-comment">// Add test edges</span>
+    assertEquals(expectedDistance, 
+        algorithm.findShortestPath(graph, source, destination));
+}
+</div></code></pre>
+<h4 id="edge-cases">Edge Cases</h4>
+<ul>
+<li>Empty graph</li>
+<li>Single node</li>
+<li>Disconnected components</li>
+<li>Maximum possible path length</li>
+</ul>
+<h3 id="conclusion">Conclusion</h3>
+<p>This implementation of Dijkstra's Algorithm provides a flexible, generic approach that can be adapted to various use cases while maintaining performance and reliability. The use of generics allows for versatile application across different data types, while the interface-based design ensures extensibility and maintainability.</p>
+<h2 id="comprehensive-guide-to-dijkstras-algorithm-with-case-study">Comprehensive Guide to Dijkstra's Algorithm with Case Study</h2>
+<h3 id="1-practical-example">1. Practical Example</h3>
+<p>Consider the following weighted graph:</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    0((0)) -->|4| 1((1))
+    0 -->|7| 6((6))
+    1 -->|9| 2((2))
+    1 -->|11| 6((6))
+    1 -->|20| 7((7))
+    2 -->|6| 3((3))
+    2 -->|2| 4((4))
+    3 -->|5| 5((5))
+    3 -->|10| 4((4))
+    4 -->|15| 5((5))
+    4 -->|1| 7((7))
+    4 -->|5| 8((8))
+    5 -->|12| 8((8))
+    6 -->|1| 7((7))
+    7 -->|3| 8((8))
+    style 0 fill:#f9f,stroke:#333,stroke-width:4px
+    style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
+</div></code></pre>
+<h3 id="sample-path-analysis-0-to-8">Sample Path Analysis: 0 to 8</h3>
+<p>Let's trace how Dijkstra's algorithm finds the shortest path from node 0 to node 8.</p>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant PQ as Priority Queue
+    participant D as Distance Array
+    participant P as Path Tracking
+    Note over PQ,P: Initial State
+    Note over D: Node 0: 0<br/>All others: ∞
+    rect rgb(200, 255, 200)
+        Note over PQ: Step 1 - Process Node 0
+        PQ->>D: Update neighbors
+        Note over D: Node 1: 4<br/>Node 6: 7
+    end
+    rect rgb(200, 220, 255)
+        Note over PQ: Step 2 - Process Node 1
+        PQ->>D: Update neighbors
+        Note over D: Node 2: 13<br/>Node 6: 7 (unchanged)<br/>Node 7: 24
+    end
+    rect rgb(255, 220, 220)
+        Note over PQ: Step 3 - Process Node 6
+        PQ->>D: Update neighbors
+        Note over D: Node 7: 8
+    end
+    rect rgb(220, 255, 220)
+        Note over PQ: Step 4 - Process Node 7
+        PQ->>D: Update neighbors
+        Note over D: Node 8: 11
+    end
+</div></code></pre>
+<h3 id="shortest-path-discovery">Shortest Path Discovery</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Final Path
+        0((0)) -->|7| 6((6))
+        6 -->|1| 7((7))
+        7 -->|3| 8((8))
+        
+        style 0 fill:#f9f,stroke:#333,stroke-width:4px
+        style 6,7,8 fill:#9f9,stroke:#333,stroke-width:4px
+    end
+
+    subgraph Distance Table
+        DT[Final Distances:<br/>0→8: 11 units<br/>Path: 0→6→7→8]
+    end
+</div></code></pre>
+<h3 id="2-algorithm-implementation-for-example">2. Algorithm Implementation for Example</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DijkstraExample</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Map&lt;Integer, Integer&gt; <span class="hljs-title">findShortestPath</span><span class="hljs-params">(WeightedGraph graph, <span class="hljs-keyword">int</span> start)</span> </span>{
+        Map&lt;Integer, Integer&gt; distances = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        PriorityQueue&lt;Node&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(
+            (a, b) -&gt; distances.get(a) - distances.get(b)
+        );
+        
+        <span class="hljs-comment">// Initialize distances</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node = <span class="hljs-number">0</span>; node &lt; <span class="hljs-number">9</span>; node++) {
+            distances.put(node, Integer.MAX_VALUE);
+        }
+        distances.put(start, <span class="hljs-number">0</span>);
+        pq.offer(<span class="hljs-keyword">new</span> Node(start));
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            Node current = pq.poll();
+            
+            <span class="hljs-keyword">for</span> (Edge edge : graph.getEdges(current.id)) {
+                <span class="hljs-keyword">int</span> newDist = distances.get(current.id) + edge.weight;
+                <span class="hljs-keyword">if</span> (newDist &lt; distances.get(edge.dest)) {
+                    distances.put(edge.dest, newDist);
+                    pq.offer(<span class="hljs-keyword">new</span> Node(edge.dest));
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> distances;
+    }
+}
+</div></code></pre>
+<h3 id="3-step-by-step-path-discovery">3. Step-by-Step Path Discovery</h3>
+<p>Key Decision Points in Example Graph:
+Initial Choice at Node 0:</p>
+<p>Option 1: 0→1 (weight: 4)
+Option 2: 0→6 (weight: 7) ✓</p>
+<p>From Node 6:</p>
+<p>Direct path to 7 (weight: 1) ✓</p>
+<p>From Node 7:</p>
+<p>Direct path to 8 (weight: 3) ✓</p>
+<h3 id="alternative-paths-analysis">Alternative Paths Analysis:</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    subgraph Alternative Routes
+        P1[Path 1: 0→1→2→4→8<br/>Cost: 20]
+        P2[Path 2: 0→6→7→8<br/>Cost: 11]
+        P3[Path 3: 0→1→6→7→8<br/>Cost: 19]
+    end
+</div></code></pre>
+<h3 id="4-implementation-details">4. Implementation Details</h3>
+<h4 id="priority-queue-state-transitions">Priority Queue State Transitions</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// Example progression of priority queue states</span>
+Step <span class="hljs-number">1</span>: [(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)]
+Step <span class="hljs-number">2</span>: [(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>), (<span class="hljs-number">6</span>,<span class="hljs-number">7</span>)]
+Step <span class="hljs-number">3</span>: [(<span class="hljs-number">6</span>,<span class="hljs-number">7</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>), (<span class="hljs-number">7</span>,<span class="hljs-number">24</span>)]
+Step <span class="hljs-number">4</span>: [(<span class="hljs-number">7</span>,<span class="hljs-number">8</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
+Step <span class="hljs-number">5</span>: [(<span class="hljs-number">8</span>,<span class="hljs-number">11</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">13</span>)]
+</div></code></pre>
+<h4 id="path-tracking">Path Tracking</h4>
+<pre class="hljs"><code><div>Map&lt;Integer, Integer&gt; previousNodes = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+<span class="hljs-comment">// After algorithm completion:</span>
+<span class="hljs-comment">// 8 → 7 → 6 → 0</span>
+</div></code></pre>
+<p>This practical example demonstrates how Dijkstra's algorithm:</p>
+<ul>
+<li>Always selects the minimum current distance node</li>
+<li>Updates distances through edge relaxation</li>
+<li>Maintains an optimal substructure</li>
+<li>Guarantees the shortest path upon completion</li>
+</ul>
+<h2 id="dijkstras-algorithm-comparative-analysis">Dijkstra's Algorithm: Comparative Analysis</h2>
+<h3 id="graph-structures">Graph Structures</h3>
+<h4 id="example-1-original-graph">Example 1 (Original Graph)</h4>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    0((0)) -->|7| 1((1))
+    0 -->|9| 2((2))
+    0 -->|14| 5((5))
+    1 -->|10| 2((2))
+    1 -->|15| 3((3))
+    2 -->|11| 3((3))
+    2 -->|2| 5((5))
+    3 -->|6| 4((4))
+    4 -->|9| 5((5))
+    style 0 fill:#f9f,stroke:#333,stroke-width:4px
+    style 1,2,3,4,5 fill:#bbf,stroke:#333,stroke-width:2px
+</div></code></pre>
+<h4 id="example-2-extended-graph">Example 2 (Extended Graph)</h4>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    0((0)) -->|4| 1((1))
+    0 -->|7| 6((6))
+    1 -->|9| 2((2))
+    1 -->|11| 6((6))
+    1 -->|20| 7((7))
+    2 -->|6| 3((3))
+    2 -->|2| 4((4))
+    3 -->|5| 5((5))
+    3 -->|10| 4((4))
+    4 -->|15| 5((5))
+    4 -->|1| 7((7))
+    4 -->|5| 8((8))
+    5 -->|12| 8((8))
+    6 -->|1| 7((7))
+    7 -->|3| 8((8))
+    style 0 fill:#f9f,stroke:#333,stroke-width:4px
+    style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
+</div></code></pre>
+<h3 id="algorithm-processing-steps">Algorithm Processing Steps</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant PQ as Priority Queue
+    participant D as Distance Array
+    participant P as Path Tracker
+    
+    Note over PQ,P: Algorithm Initialization
+    PQ->>D: Set initial distances (∞)
+    D->>D: Set source distance (0)
+    
+    loop While Priority Queue Not Empty
+        PQ->>D: Get node with min distance
+        D->>P: Update shortest paths
+        P->>PQ: Add unvisited neighbors
+    end
+</div></code></pre>
+<h3 id="detailed-analysis-for-example-1-0-to-5">Detailed Analysis for Example 1 (0 to 5)</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant Start as Start(0)
+    participant Process as Processing
+    participant End as End(5)
+    
+    Note over Start: Initial state
+    Start->>Process: Distance[0] = 0
+    Note over Process: Visit node 0
+    Process->>Process: Update neighbors
+    Note right of Process: 1: min(∞, 7) = 7
+    Note right of Process: 2: min(∞, 9) = 9
+    Note right of Process: 5: min(∞, 14) = 14
+    
+    Process->>Process: Visit node 1
+    Note right of Process: 2: min(9, 7+10) = 9
+    Note right of Process: 3: min(∞, 7+15) = 22
+    
+    Process->>Process: Visit node 2
+    Note right of Process: 5: min(14, 9+2) = 11
+    
+    Process->>End: Final shortest path
+    Note over End: Distance[5] = 11
+</div></code></pre>
+<h3 id="detailed-analysis-for-example-2-0-to-8">Detailed Analysis for Example 2 (0 to 8)</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant Start as Start(0)
+    participant Process as Processing
+    participant End as End(8)
+    
+    Note over Start: Initial state
+    Start->>Process: Distance[0] = 0
+    Note over Process: Visit node 0
+    Process->>Process: Update neighbors
+    Note right of Process: 1: min(∞, 4) = 4
+    Note right of Process: 6: min(∞, 7) = 7
+    
+    Process->>Process: Visit node 1
+    Note right of Process: 2: min(∞, 4+9) = 13
+    Note right of Process: 6: min(7, 4+11) = 7
+    Note right of Process: 7: min(∞, 4+20) = 24
+    
+    Process->>Process: Visit node 6
+    Note right of Process: 7: min(24, 7+1) = 8
+    
+    Process->>Process: Visit node 7
+    Note right of Process: 8: min(∞, 8+3) = 11
+    
+    Process->>End: Final shortest path
+    Note over End: Distance[8] = 11
+</div></code></pre>
+<h3 id="key-findings">Key Findings</h3>
+<p>Example 1 (0 to 5):</p>
+<ul>
+<li>Shortest path: 0 → 2 → 5</li>
+<li>Total distance: 11 units</li>
+<li>Key decision point: Choosing path through node 2 instead of direct path (14)</li>
+</ul>
+<p>Example 2 (0 to 8):</p>
+<ul>
+<li>Shortest path: 0 → 6 → 7 → 8</li>
+<li>Total distance: 11 units</li>
+<li>Key decision point: Using path through nodes 6 and 7 instead of longer alternatives</li>
+</ul>
+<h3 id="implementation-considerations">Implementation Considerations</h3>
+<ul>
+<li>Priority Queue maintenance is crucial for efficiency</li>
+<li>Path reconstruction requires tracking previous nodes</li>
+<li>Edge relaxation determines optimal path selection</li>
+<li>Time complexity: O((V + E) log V) with binary heap</li>
+<li>Space complexity: O(V + E) with adjacency list</li>
+</ul>
+<p>Would you like me to elaborate on any specific part of this analysis or focus on a particular path finding scenario in either graph?</p>
+<p>Let's significantly expand the provided text on Dijkstra's Algorithm, delving deeper into its intricacies, optimizations, and applications.</p>
+<h2 id="comprehensive-guide-to-dijkstras-algorithm-theory-implementation-and-applications">Comprehensive Guide to Dijkstra's Algorithm: Theory, Implementation, and Applications</h2>
+<p>The main idea behind Dijkstra's Algorithm is to efficiently find the shortest path between a starting node (source node) and every other node in a graph with non-negative edge weights.</p>
+<p>It achieves this by using a greedy approach:</p>
+<ul>
+<li>Maintaining a priority queue: The algorithm keeps track of the &quot;most promising&quot; nodes to explore next. These are the nodes that currently have the smallest estimated distance from the source.</li>
+<li>Iterative exploration:  It repeatedly selects the node with the smallest estimated distance from the priority queue.</li>
+<li>Updating distances:  The algorithm then explores the neighbors of this node. If it finds a shorter path to a neighbor through the current node, it updates the neighbor's estimated distance.</li>
+<li>Expanding the explored set: The processed node is marked as &quot;explored,&quot; and the process continues until all reachable nodes have been explored.</li>
+</ul>
+<h3 id="key-principle">Key Principle:</h3>
+<p>The algorithm leverages the property that the shortest path to any explored node is known. This allows it to build upon previously discovered shortest paths to find the optimal routes to all other nodes.</p>
+<p>In essence, Dijkstra's Algorithm is a systematic way of exploring a graph, always prioritizing the nodes closest to the source and updating distances as shorter paths are discovered. This leads to the discovery of the shortest paths to all reachable nodes in the graph.</p>
+<h3 id="introduction">Introduction</h3>
+<p>Dijkstra's Algorithm, conceived by Edsger Dijkstra in 1956, stands as a cornerstone in graph theory and computer science. Its primary function is to determine the shortest path between a starting node (source) and every other node in a graph. The algorithm's elegance lies in its ability to efficiently solve this problem for graphs with non-negative edge weights. This comprehensive guide will explore the algorithm's theoretical underpinnings, practical implementation strategies, optimization techniques, and real-world applications.</p>
+<h2 id="1-theoretical-foundations">1. Theoretical Foundations</h2>
+<h3 id="11-the-shortest-path-problem">1.1. The Shortest Path Problem</h3>
+<p>The shortest path problem seeks the path with the minimum cumulative weight between two nodes in a graph. This problem finds applications in various domains, including:</p>
+<ul>
+<li>Network Routing: Finding the fastest route for data packets in a computer network.</li>
+<li>Transportation: Determining the optimal route for vehicles or goods, considering factors like distance, traffic, and tolls.</li>
+<li>Robotics: Planning the most efficient path for a robot to navigate in a given environment, avoiding obstacles and minimizing energy consumption.</li>
+<li>Geographic Information Systems (GIS): Calculating the shortest distance or travel time between locations on a map, considering road networks, terrain, and traffic conditions.</li>
+<li>Logistics and Supply Chain Management: Optimizing the delivery of goods and services by finding the most efficient routes and schedules.</li>
+<li>Financial Networks: Analyzing the flow of funds and identifying critical paths in financial systems.</li>
+</ul>
+<h3 id="12-dijkstras-algorithm-the-greedy-approach">1.2. Dijkstra's Algorithm: The Greedy Approach</h3>
+<p>Dijkstra's Algorithm employs a greedy strategy to solve the shortest path problem. The algorithm maintains a set of explored nodes (whose shortest distances from the source are known) and a priority queue of unexplored nodes. In each iteration, the algorithm:</p>
+<ul>
+<li>Selects the node with the minimum tentative distance from the source from the priority queue.</li>
+<li>Explores its neighbors and updates their tentative distances if a shorter path is discovered.</li>
+<li>Adds the explored node to the set of explored nodes.</li>
+</ul>
+<p>This process continues until all nodes are explored or the destination node is reached. The greedy nature of the algorithm ensures that it always selects the most promising node for exploration, leading to an optimal solution.</p>
+<h3 id="13-correctness-and-optimality">1.3. Correctness and Optimality</h3>
+<p>Dijkstra's Algorithm's correctness and optimality rely on the following properties:</p>
+<ul>
+<li>Non-Negative Weights: The algorithm assumes that all edge weights are non-negative. This ensures that the shortest path to a node is always found before exploring nodes with potentially longer paths. If negative weights are present, alternative algorithms like the Bellman-Ford algorithm must be used.</li>
+<li>Optimal Substructure: The shortest path to any node in the graph can be decomposed into a series of shortest paths to its intermediate nodes. This property allows the algorithm to build upon previously discovered shortest paths.</li>
+<li>Greedy Choice Property: At each step, the algorithm selects the node with the minimum tentative distance, which is guaranteed to be part of the shortest path. This greedy choice leads to an optimal solution.</li>
+</ul>
+<h2 id="2-implementation-strategies">2. Implementation Strategies</h2>
+<h3 id="21-graph-representation">2.1. Graph Representation</h3>
+<p>The choice of graph representation significantly impacts the algorithm's efficiency. Two common representations are:</p>
+<ul>
+<li>Adjacency List: Stores the graph as a collection of lists, where each list represents a node and its adjacent edges (with corresponding weights). This representation is memory-efficient for sparse graphs (graphs with relatively few edges).</li>
+<li>Adjacency Matrix: Stores the graph as a two-dimensional matrix, where each cell represents the weight of the edge between two nodes. This representation is faster for dense graphs (graphs with many edges) but consumes more memory.</li>
+</ul>
+<p>The choice between these representations depends on the specific characteristics of the graph being analyzed.</p>
+<h3 id="22-priority-queue">2.2. Priority Queue</h3>
+<p>The priority queue is a critical component of Dijkstra's Algorithm, as it efficiently retrieves the node with the minimum tentative distance. Several data structures can be used to implement the priority queue:</p>
+<ul>
+<li>Binary Heap: Offers a good balance between insertion, deletion, and retrieval operations (all with logarithmic time complexity). This is a common choice for most implementations.</li>
+<li>Fibonacci Heap: Provides better theoretical time complexity for certain operations (amortized constant time for decrease-key), but can be more complex to implement and may have higher constant factors.</li>
+<li>Pairing Heap: Offers similar performance to Fibonacci heaps with potentially simpler implementation, making it a good alternative in practice.</li>
+</ul>
+<p>The selection of the priority queue data structure can affect the algorithm's overall performance, especially for large graphs.</p>
+<h3 id="23-distance-and-path-tracking">2.3. Distance and Path Tracking</h3>
+<p>The algorithm maintains two data structures to track the progress:</p>
+<ul>
+<li>Distance Array: Stores the tentative shortest distances from the source to each node.</li>
+<li>Previous Node Array: Stores the previous node on the shortest path to each node, enabling path reconstruction.</li>
+</ul>
+<h2 id="3-algorithm-execution">3. Algorithm Execution</h2>
+<h3 id="initialization">Initialization:</h3>
+<ul>
+<li>Set the tentative distance of the source node to 0.</li>
+<li>Set the tentative distances of all other nodes to infinity.</li>
+<li>Add the source node to the priority queue.</li>
+</ul>
+<h3 id="iteration">Iteration:</h3>
+<ul>
+<li>While the priority queue is not empty:
+<ul>
+<li>Extract the node with the minimum tentative distance from the priority queue.</li>
+<li>Mark the node as explored.</li>
+<li>For each neighbor of the current node:
+<ul>
+<li>Calculate a new tentative distance through the current node.</li>
+<li>If the new distance is shorter than the current tentative distance of the neighbor:
+<ul>
+<li>Update the neighbor's tentative distance.</li>
+<li>Update the neighbor's previous node to the current node.</li>
+<li>Add or update the neighbor in the priority queue.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="path-reconstruction">Path Reconstruction:</h3>
+<ul>
+<li>Start from the destination node.</li>
+<li>Use the previous node array to trace back the shortest path to the source node.</li>
+</ul>
+<h2 id="4-optimization-techniques">4. Optimization Techniques</h2>
+<h3 id="priority-queue-optimization">Priority Queue Optimization:</h3>
+<ul>
+<li>Use a suitable data structure based on graph characteristics.</li>
+<li>Minimize unnecessary updates to the priority queue.</li>
+</ul>
+<h3 id="memory-management">Memory Management:</h3>
+<ul>
+<li>Choose an appropriate graph representation.</li>
+<li>Consider memory-efficient data structures for large graphs.</li>
+</ul>
+<h3 id="early-termination">Early Termination:</h3>
+<ul>
+<li>Stop the algorithm when the destination node is reached.</li>
+<li>Use heuristics to prune unpromising paths.</li>
+</ul>
+<h2 id="5-performance-analysis">5. Performance Analysis</h2>
+<h3 id="time-complexity">Time Complexity:</h3>
+<ul>
+<li>Depends on the priority queue implementation.</li>
+<li>O((|V| + |E|) log |V|) with a binary heap.</li>
+<li>O(|E| + |V| log |V|) with a Fibonacci heap.</li>
+</ul>
+<h3 id="space-complexity">Space Complexity:</h3>
+<ul>
+<li>Depends on the graph representation.</li>
+<li>O(|V| + |E|) with an adjacency list.</li>
+<li>O(|V|^2) with an adjacency matrix.</li>
+</ul>
+<h2 id="6-applications">6. Applications</h2>
+<ul>
+<li>Network Routing: Finding the fastest and most reliable routes for data packets.</li>
+<li>Transportation: Optimizing routes for vehicles, considering distance, traffic, and costs.</li>
+<li>Robotics: Planning efficient paths for robots in various environments.</li>
+<li>Geographic Information Systems (GIS): Calculating shortest distances and routes on maps.</li>
+<li>Logistics and Supply Chain Management: Optimizing the delivery of goods and services.</li>
+</ul>
+<h2 id="7-case-study-network-routing">7. Case Study: Network Routing</h2>
+<ul>
+<li>Scenario: A network with routers and links, each link having a cost (representing delay or bandwidth).</li>
+<li>Objective: Find the shortest path between two routers.</li>
+<li>Solution: Apply Dijkstra's Algorithm using the routers as nodes and the links as edges with their associated costs.</li>
+</ul>
+<h2 id="8-conclusion">8. Conclusion</h2>
+<p>Dijkstra's Algorithm is a powerful tool.
+The document could be significantly improved by incorporating more diverse and detailed examples of how to use Dijkstra's algorithm. While it currently provides a solid theoretical foundation and implementation guidance, the practical application aspect could be strengthened. Here are some ways to enhance the document with more examples:</p>
+<h3 id="illustrative-use-cases">Illustrative Use Cases:</h3>
+<ul>
+<li>Beyond Network Routing: The document focuses heavily on network routing as an application. Expanding to other domains like transportation, robotics, and GIS with concrete scenarios would showcase the algorithm's versatility.</li>
+<li>Step-by-Step Walkthroughs: Detailed, step-by-step examples of applying Dijkstra's algorithm to specific graph problems would aid understanding. This could include visualizing the graph, the priority queue states, and the path reconstruction process.</li>
+<li>Code Examples: Providing code snippets in popular programming languages (Java, Python, C++) demonstrating the algorithm's implementation for different use cases would be valuable for practical learners.</li>
+</ul>
+<h3 id="varying-graph-types">Varying Graph Types:</h3>
+<ul>
+<li>Sparse vs. Dense Graphs: Showcasing how the choice of graph representation (adjacency list vs. matrix) impacts performance for different graph densities would provide practical insights.</li>
+<li>Directed vs. Undirected Graphs: Illustrating how the algorithm adapts to both directed and undirected graphs would highlight its flexibility.</li>
+<li>Graphs with Varying Edge Weights: Using examples with different weight distributions (uniform, random, skewed) would demonstrate the algorithm's robustness.</li>
+</ul>
+<h3 id="problem-solving-scenarios">Problem-Solving Scenarios:</h3>
+<ul>
+<li>Real-World Problems: Presenting real-world scenarios (e.g., finding the shortest driving route, optimizing robot navigation) and applying Dijkstra's algorithm to solve them would bridge the gap between theory and practice.</li>
+<li>Comparison with Other Algorithms: Comparing the performance of Dijkstra's algorithm with other shortest path algorithms (e.g., Bellman-Ford, A*) for specific scenarios would provide a deeper understanding of its strengths and limitations.</li>
+</ul>
+<p>By incorporating these types of examples, the document would become a more comprehensive and practical resource for understanding and applying Dijkstra's algorithm in various domains. It would empower readers to effectively utilize the algorithm to solve real-world problems and make informed decisions about implementation choices.</p>
+
+</body>
+</html>
