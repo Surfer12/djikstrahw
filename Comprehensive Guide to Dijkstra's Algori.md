@@ -25,6 +25,50 @@ graph TD
     style 0 fill:#f9f,stroke:#333,stroke-width:4px
     style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
 ```
+### Shortest Paths Analysis
+
+For the extended graph shown above:
+
+#### Shortest Path from 0 to 5
+1. Path: 0 → 1 → 2 → 3 → 5
+2. Distance: 24 (4 + 9 + 6 + 5)
+3. Path breakdown:
+   - 0 to 1: weight 4
+   - 1 to 2: weight 9
+   - 2 to 3: weight 6
+   - 3 to 5: weight 5
+
+```mermaid
+graph TD
+    0((0)) -->|4| 1((1))
+    1 -->|9| 2((2))
+    2 -->|6| 3((3))
+    3 -->|5| 5((5))
+    style 0,1,2,3,5 fill:#f9f,stroke:#333,stroke-width:4px
+    style 4,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+Path visualization for 0 to 5 (highlighted in pink)
+
+#### Shortest Path from 0 to 8
+1. Path: 0 → 6 → 7 → 8
+2. Distance: 11 (7 + 1 + 3)
+3. Path breakdown:
+   - 0 to 6: weight 7
+   - 6 to 7: weight 1
+   - 7 to 8: weight 3
+
+```mermaid
+graph TD
+    0((0)) -->|7| 6((6))
+    6 -->|1| 7((7))
+    7 -->|3| 8((8))
+    style 0,6,7,8 fill:#f9f,stroke:#333,stroke-width:4px
+    style 1,2,3,4,5 fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+Path visualization for 0 to 8 (highlighted in pink)
+
 
 ## Dijkstra's Algorithm: Comparative Analysis
 
@@ -65,7 +109,7 @@ public class WeightedGraph<T> {
 2. Graph Visualization Representations
 
 
-#### Example 2 (Extended Graph) Nodes 0-8
+#### Example Continued (Extended Graph) Nodes 0-8
 ```mermaid
 graph TD
     0((0)) -->|4| 1((1))
@@ -87,16 +131,7 @@ graph TD
     style 1,2,3,4,5,6,7,8 fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-### Graph Structure Comparison
-
-| Characteristic | Example 1 | Example 2 |
-|---------------|-----------|-----------|
-| Number of Nodes | 6 (0-5) | 9 (0-8) |
-| Connectivity | Sparse | More Connected |
-| Longest Path | 0 → 1 → 3 → 4 → 5 | 0 → 1 → 7 → 8 |
-| Maximum Edge Weight | 15 | 20 |
-
-### Advanced Graph Representation
+###  Graph Representation as an Interface
 
 ```java
 public interface GraphStructure<T> {
@@ -126,19 +161,6 @@ public class AdjacencyListGraph<T> implements GraphStructure<T> {
 3. **Performance Implications**:
    - Sparse graphs: Adjacency List
    - Dense graphs: Adjacency Matrix
-
-### Performance Metrics
-
-```mermaid
-graph TD
-    subgraph Graph Performance
-        A[Adjacency List] -->|O(V+E)| B[Space Complexity]
-        A -->|O(E)| C[Edge Iteration]
-        D[Adjacency Matrix] -->|O(V²)| B
-        D -->|O(V²)| C
-    end
-```
-
 ### Practical Recommendations
 
 - Use adjacency list for sparse graphs
@@ -196,19 +218,12 @@ sequenceDiagram
 ```
 
 ### Key Findings for Shortest Path (0 to 5)
-- Shortest path: 0 → 2 → 5
-- Total distance: 11 units
+- Shortest path: 0 → 1 → 2 → 3 → 5
+- Total distance: 24 units
 - Key decision points: 
   1. Initial route through node 1
   2. Navigating through intermediate nodes 2 and 3
-  3. Balancing edge weights to find optimal path
-
-### Calculation Breakdown
-- 0 → 1: 4 units
-- 1 → 2: 9 units
-- 2 → 3: 6 units
-- 3 → 5: 5 units
-- Total distance: 4 + 9 + 6 + 5 = 24 units
+  3. Balancing edge weights to find the optimal path
 
 ### Detailed Analysis for Shortest Path (0 to 8)
 ```mermaid
@@ -311,9 +326,9 @@ It achieves this by using a greedy approach:
 
 ### Key Findings of Shortest Path in given Graph
 Example 1 (0 to 5):
-- Shortest path: 0 → 2 → 5
-- Total distance: 11 units
-- Key decision point: Choosing path through node 2 instead of direct path (14)
+- Shortest path: 0 → 1 → 2 → 3 → 5
+- Total distance: 24 units
+- Key decision point: Choosing path through node 1 instead of direct path (14)
 
 
 Example 2 (0 to 8):
